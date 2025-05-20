@@ -72,6 +72,7 @@
                      [(str/replace k #"^biff.env." "") v]))
                  (System/getProperties))]))
 
+;; TODO: this should check that all the expected keys are provided
 (defn use-aero-config [{:biff.config/keys [skip-validation profile] :as ctx}]
   (let [env (get-env)
         profile (some-> (or profile
