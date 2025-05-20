@@ -82,7 +82,10 @@
                         keyword)
         ctx (merge ctx (aero/read-config (io/resource "config.edn") {:profile profile :biff.aero/env env}))
         secret (fn [k]
-                 (some-> (get ctx k) (.invoke)))
+                 (when-let [v (get ctx k)]
+                   (if (fn? v)
+                     (v)
+                     v)))
         ctx (assoc ctx :biff/secret secret)]
     (when-not (or skip-validation
                   (and (secret :biff.middleware/cookie-secret)
